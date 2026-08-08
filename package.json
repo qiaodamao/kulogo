@@ -1,0 +1,41 @@
+{
+  "name": "svg-logo-library",
+  "version": "1.0.0",
+  "description": "A beautiful library with SVG logos, deployable to multiple platforms",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "pnpm scan:svg && pnpm generate:svg && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "scan:svg": "tsx scripts/scan-svgs.ts",
+    "generate:svg": "tsx scripts/generate-svgs.ts"
+  },
+  "dependencies": {
+    "@svgr/core": "^8.1.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.11.11",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.454.0",
+    "next": "14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "shiki": "^1.24.0",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.4",
+    "tally-embed": "^1.0.0",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.13.0",
+    "eslint-config-next": "14.2.15",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
