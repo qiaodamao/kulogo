@@ -354,7 +354,7 @@ export default function Home() {
           </div>
           
           {/* 内容区域 */}
-          <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+          <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 pt-[188px] pb-12">
             <div className="flex flex-col items-center gap-12 lg:gap-16">
               {/* 上方内容 */}
               <div className="w-full max-w-3xl text-center">

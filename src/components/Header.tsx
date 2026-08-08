@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Sun, Moon, Github, Download, Upload, House, FileText, Heart, Package, Link } from "lucide-react";
 import TallyEmbed from "tally-embed";
 
@@ -8,6 +9,18 @@ export default function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const pathname = usePathname();
+
+  // 导航项配置
+  const navItems = [
+    { label: "首页", href: "/", icon: House },
+    { label: "关于我们", href: "/about", icon: FileText },
+    { label: "赞助支持", href: "/sponsor", icon: Heart },
+    { label: "素材站", href: "https://sucai.kusheji.com/", external: true, icon: Package },
+    { label: "网址导航", href: "https://dh.kusheji.com/", external: true, icon: Link },
+  ];
+
+  const isActive = (href: string) => !href.startsWith("http") && pathname === href;
 
   // 客户端水合后，读取主题模式
   useEffect(() => {
@@ -56,104 +69,132 @@ export default function Header() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 text-foreground border-b border-gray-200 dark:border-gray-800 w-full">
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-[3.5rem] sm:h-[3.5rem] md:h-[4.5rem] lg:h-[4.5rem] xl:h-[4.5rem] 2xl:h-[4.5rem]">
-            <div className="flex items-center gap-8">
-              <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-                <div className="w-8 h-8">
-                  <img 
-                    src="/images/logo.svg" 
-                    alt="SVG Logo" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="font-bold text-xl">酷设计</span>
-              </a>
-              
-              {/* 桌面端菜单 */}
-              <div className="hidden md:flex items-center gap-6">
-                <a href="/" className="text-foreground hover:text-[#16a34a] transition-colors">首页</a>
-                <a href="/about" className="text-foreground hover:text-[#16a34a] transition-colors">关于我们</a>
-                <a href="/sponsor" className="text-foreground hover:text-[#16a34a] transition-colors">赞助支持</a>
-                <a href="https://sucai.kusheji.com/" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-[#16a34a] transition-colors">素材站</a>
-                <a href="https://dh.kusheji.com/" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-[#16a34a] transition-colors">网址导航</a>
+    <div className="w-full">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 flex justify-center items-center">
+          {/* 胶囊导航容器 - 居中，包含全部内容 */}
+          <div className="flex items-center gap-1 bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2 shadow-[0_2px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)] max-w-full">
+            {/* Logo */}
+            <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pl-2 pr-1">
+              <div className="w-9 h-9">
+                <img
+                  src="/images/logo.svg"
+                  alt="SVG Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
-            </div>
-            
-            <div className="ml-auto flex items-center gap-4">
-              <button
-                onClick={async () => {
-                  try {
-                    await TallyEmbed.openPopup("wza6xZ", {
-                      layout: "default",
-                      width: 375,
-                      alignLeft: false,
-                      onSubmit: (payload) => {
-                        console.log("Form submitted:", payload);
-                      },
-                    });
-                  } catch (error) {
-                    console.error("Error opening Tally form:", error);
+              <span className="font-bold text-lg hidden sm:inline">酷设计</span>
+            </a>
+
+            {/* 分隔线 */}
+            <div className="hidden md:block w-px h-6 bg-gray-200 dark:bg-gray-600 mx-0.5"></div>
+
+            {/* 导航链接（桌面端） */}
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className={
+                    "hidden md:inline-block px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
+                    (active
+                      ? "bg-[#16a34a] text-white shadow-sm"
+                      : "text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a]")
                   }
-                }}
-                className="md:flex hidden items-center gap-2 px-4 py-2 bg-[rgb(22_163_74)] text-white rounded-full text-sm font-medium hover:bg-[rgb(22_163_74)]/90 hover:shadow-[0_4px_12px_rgba(22,163,74,0.3)] transition-all duration-300" style={{ lineHeight: '1.1rem' }}
-              >
-                <Upload className="w-4 h-4" />
-                提交图标
-              </button>
-              <a 
-                href="https://github.com/xmbsm/kulogo" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="md:block hidden p-2 rounded-lg hover:bg-accent transition-colors"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-lg hover:bg-accent transition-colors"
-              >
-                {isClient ? (isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />) : <Moon className="w-5 h-5" />}
-              </button>
-              {/* 移动端菜单按钮 */}
-              <button 
-                className="md:hidden p-2 rounded-lg hover:bg-accent transition-colors"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-                </svg>
-              </button>
-            </div>
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+
+            {/* 分隔线 */}
+            <div className="hidden md:block w-px h-6 bg-gray-200 dark:bg-gray-600 mx-0.5"></div>
+
+            {/* 提交图标按钮（桌面端） */}
+            <button
+              onClick={async () => {
+                try {
+                  await TallyEmbed.openPopup("wza6xZ", {
+                    layout: "default",
+                    width: 375,
+                    alignLeft: false,
+                    onSubmit: (payload) => {
+                      console.log("Form submitted:", payload);
+                    },
+                  });
+                } catch (error) {
+                  console.error("Error opening Tally form:", error);
+                }
+              }}
+              className="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 bg-black/5 dark:bg-white/10 text-foreground rounded-full text-sm font-medium hover:bg-black/10 dark:hover:bg-white/20 hover:text-[#16a34a] transition-all duration-300"
+              style={{ lineHeight: '1.1rem' }}
+            >
+              <Upload className="w-4 h-4" />
+              <span className="hidden lg:inline">提交图标</span>
+            </button>
+
+            {/* GitHub（桌面端） */}
+            <a
+              href="https://github.com/xmbsm/kulogo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
+              aria-label="GitHub"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+
+            {/* 主题切换 */}
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
+              aria-label="切换主题"
+            >
+              {isClient ? (isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />) : <Moon className="w-5 h-5" />}
+            </button>
+
+            {/* 移动端菜单按钮 */}
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-300"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="菜单"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+              </svg>
+            </button>
           </div>
         </div>
-        
-        {/* 移动端菜单 */}
+
+        {/* 移动端菜单 - 胶囊导航 */}
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 border-t border-border bg-white dark:bg-gray-900 shadow-lg z-40 w-full">
             <div className="w-full px-4 sm:px-6 lg:px-8 py-4 space-y-3">
-              <a href="/" className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors">
-                <House className="w-4 h-4" />
-                首页
-              </a>
-              <a href="/about" className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors">
-                <FileText className="w-4 h-4" />
-                关于我们
-              </a>
-              <a href="/sponsor" className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors">
-                <Heart className="w-4 h-4" />
-                赞助支持
-              </a>
-              <a href="https://sucai.kusheji.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors">
-                <Package className="w-4 h-4" />
-                素材站
-              </a>
-              <a href="https://dh.kusheji.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors">
-                <Link className="w-4 h-4" />
-                网址导航
-              </a>
+              {/* 胶囊样式导航项 */}
+              <div className="flex flex-wrap gap-2">
+                {navItems.map((item) => {
+                  const active = isActive(item.href);
+                  const Icon = item.icon;
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className={
+                        "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
+                        (active
+                          ? "bg-[#16a34a] text-white shadow-sm"
+                          : "bg-black/5 dark:bg-white/10 text-foreground hover:text-[#16a34a]")
+                      }
+                    >
+                      <Icon className="w-4 h-4" />
+                      {item.label}
+                    </a>
+                  );
+                })}
+              </div>
               <button
                 onClick={async () => {
                   try {
