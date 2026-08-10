@@ -54,7 +54,36 @@ pnpm build
 
 ## 添加新 Logo
 
-### 1. 放置 SVG 文件
+每个分类文件夹下都有一个 `_meta.yaml` 元数据清单文件，用于描述该分类下所有 Logo 的元信息（标题、文件名、官网链接、横版标识等），是脚本生成数据文件的配置数据源。
+
+### `_meta.yaml` 字段说明
+
+| 字段 | 说明 | 示例 |
+|------|------|------|
+| `order` | 分类在网站上的排序权重 | `10` |
+| `title` | Logo 显示名称（中英文） | `智谱` / `OpenAI` |
+| `file` | 图标 SVG 文件名 | `Zhipu.svg` |
+| `url` | 品牌官网链接 | `https://zhipuai.cn/` |
+| `wordmark` | 横版文字标识 SVG 文件名 | `Zhipu_wordmark.svg` |
+
+示例：
+
+```yaml
+order: 10
+items:
+  - title: OpenAI
+    file: OpenAI.svg
+    url: https://openai.com/
+    wordmark: OpenAI_wordmark.svg
+  - title: 智谱
+    file: Zhipu.svg
+    url: https://zhipuai.cn/
+    wordmark: Zhipu_wordmark.svg
+```
+
+### 新增流程
+
+#### 1. 放置 SVG 文件
 
 将 SVG 文件放入对应分类文件夹：
 
@@ -73,17 +102,21 @@ public/library/
   └── weather/      # 气象预警
 ```
 
-### 2. 扫描 SVG 文件
+#### 2. 更新 `_meta.yaml`
+
+在该分类的 `_meta.yaml` 的 `items` 数组中追加一条记录，填写 `title`、`file`、`url`、`wordmark` 字段。
+
+#### 3. 扫描并生成数据文件
 
 ```bash
+# 扫描 SVG 文件（自动识别新增文件并更新 _meta.yaml）
 pnpm scan:svg
-```
 
-### 3. 生成数据文件
-
-```bash
+# 生成数据文件 src/data/svgs.ts
 pnpm generate:svg
 ```
+
+> 也可以跳过手动编辑 `_meta.yaml`，仅放入 SVG 文件后直接运行 `pnpm scan:svg`，脚本会自动生成条目，但标题、URL 等信息可能需要后续手动补充修正。
 
 ## 部署
 
@@ -156,13 +189,6 @@ svg-logo-library/
 └── wrangler.toml        # Cloudflare 配置
 ```
 
-## 作者介绍
-
-**乔同学** - 专注于前端开发和设计资源整理，致力于为设计师和开发者提供高质量的品牌标识资源。
-
-- 项目地址: [https://github.com/xmbsm/kulogo](https://github.com/xmbsm/kulogo)
-- 官方网站: [https://kusheji.com](https://kusheji.com)
-
 ## 开源协议
 
 MIT License
@@ -176,7 +202,6 @@ MIT License
 如果您有任何问题或建议，欢迎通过以下方式联系我们：
 
 - Email: 1@kusheji.com
-- GitHub Issues: [项目 Issues](https://github.com/xmbsm/kulogo/issues)
 
 ## 致谢
 
