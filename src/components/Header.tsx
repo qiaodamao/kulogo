@@ -14,8 +14,8 @@ export default function Header() {
   // 导航项配置
   const navItems = [
     { label: "首页", href: "/", icon: House },
-    { label: "关于我们", href: "/about", icon: FileText },
-    { label: "赞助支持", href: "/sponsor", icon: Heart },
+    { label: "关于", href: "/about", icon: FileText },
+    { label: "支持", href: "/sponsor", icon: Heart },
     { label: "素材站", href: "https://sucai.kusheji.com/", external: true, icon: Package },
     { label: "网址导航", href: "https://dh.kusheji.com/", external: true, icon: Link },
   ];
@@ -101,7 +101,7 @@ export default function Header() {
                     "hidden md:inline-block px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
                     (active
                       ? "bg-[#16a34a] text-white shadow-sm"
-                      : "text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a]")
+                      : "text-foreground hover:bg-black/5 dark:hover:bg-white/10")
                   }
                 >
                   {item.label}
@@ -185,7 +185,7 @@ export default function Header() {
                         "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
                         (active
                           ? "bg-[#16a34a] text-white shadow-sm"
-                          : "bg-black/5 dark:bg-white/10 text-foreground hover:text-[#16a34a]")
+                          : "bg-black/5 dark:bg-white/10 text-foreground")
                       }
                     >
                       <Icon className="w-4 h-4" />

@@ -372,7 +372,7 @@ export default function Home() {
                 </p>
                 
                 <div className="flex items-center justify-center">
-                    <div className="flex items-center gap-3 px-6 py-3 bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-[rgba(0,0,0,0.01)] border border-gray-100 dark:border-gray-700">
+                    <div className="flex items-center gap-3 px-6 py-3 bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-2xl shadow-xl shadow-[rgba(0,0,0,0.01)] border border-gray-100 dark:border-gray-700">
                       <div className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center">
                         <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
