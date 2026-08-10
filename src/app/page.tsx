@@ -460,9 +460,9 @@ export default function Home() {
                   {/* 滚动Logo展示 */}
                   <div className="relative p-0 md:p-8 w-full overflow-x-hidden">
                     {/* 第一行：向左滚动 */}
-                    <div className="relative overflow-hidden h-[6rem] sm:h-[7.5rem] mb-0.125 w-full">
+                    <div className="relative overflow-hidden h-[6.25rem] sm:h-[7.5rem] w-full flex items-center">
                       <div className="animate-scroll-left">
-                        <div className="flex gap-2 sm:gap-4 w-max">
+                        <div className="flex gap-2 sm:gap-4 w-max items-center">
                           {[...svgs
                             .sort((a, b) => b.id - a.id)
                             .slice(0, 15), ...svgs
@@ -470,7 +470,7 @@ export default function Home() {
                             .slice(0, 15), ...svgs
                             .sort((a, b) => b.id - a.id)
                             .slice(0, 15)].map((svg, index) => (
-                              <div key={`${svg.id}-${index}`} className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center p-3 sm:p-4 flex-shrink-0 border border-gray-100 dark:border-gray-600 hover:shadow-lg hover:scale-105 transition-all duration-300">
+                              <div key={`${svg.id}-${index}`} className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center p-3 sm:p-4 flex-shrink-0 border border-gray-100 dark:border-gray-600 hover:shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_0_12px_rgba(0,0,0,0.15)] hover:scale-105 origin-center transition-all duration-300">
                                 <img
                                   src={getRoutePath(svg.route)}
                                   alt={svg.title}
@@ -486,9 +486,9 @@ export default function Home() {
                     </div>
                     
                     {/* 第二行：向右滚动 */}
-                    <div className="relative overflow-hidden h-[6rem] sm:h-[7.5rem] mb-0.125 w-full">
+                    <div className="relative overflow-hidden h-[6.25rem] sm:h-[7.5rem] w-full flex items-center">
                       <div className="animate-scroll-right">
-                        <div className="flex gap-2 sm:gap-4 w-max">
+                        <div className="flex gap-2 sm:gap-4 w-max items-center">
                           {[...svgs
                             .sort((a, b) => b.id - a.id)
                             .slice(15, 30), ...svgs
@@ -496,7 +496,7 @@ export default function Home() {
                             .slice(15, 30), ...svgs
                             .sort((a, b) => b.id - a.id)
                             .slice(15, 30)].map((svg, index) => (
-                              <div key={`${svg.id}-${index}`} className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center p-3 sm:p-4 flex-shrink-0 border border-gray-100 dark:border-gray-600 hover:shadow-lg hover:scale-105 transition-all duration-300">
+                              <div key={`${svg.id}-${index}`} className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center p-3 sm:p-4 flex-shrink-0 border border-gray-100 dark:border-gray-600 hover:shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_0_12px_rgba(0,0,0,0.15)] hover:scale-105 origin-center transition-all duration-300">
                                 <img
                                   src={getRoutePath(svg.route)}
                                   alt={svg.title}
@@ -512,9 +512,9 @@ export default function Home() {
                     </div>
                     
                     {/* 第三行：向左滚动 */}
-                    <div className="relative overflow-hidden h-[6rem] sm:h-[7.5rem] w-full">
+                    <div className="relative overflow-hidden h-[6.25rem] sm:h-[7.5rem] w-full flex items-center">
                       <div className="animate-scroll-left">
-                        <div className="flex gap-2 sm:gap-4 w-max">
+                        <div className="flex gap-2 sm:gap-4 w-max items-center">
                           {[...svgs
                             .sort((a, b) => b.id - a.id)
                             .slice(30, 45), ...svgs
@@ -522,7 +522,7 @@ export default function Home() {
                             .slice(30, 45), ...svgs
                             .sort((a, b) => b.id - a.id)
                             .slice(30, 45)].map((svg, index) => (
-                              <div key={`${svg.id}-${index}`} className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center p-3 sm:p-4 flex-shrink-0 border border-gray-100 dark:border-gray-600 hover:shadow-lg hover:scale-105 transition-all duration-300">
+                              <div key={`${svg.id}-${index}`} className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center p-3 sm:p-4 flex-shrink-0 border border-gray-100 dark:border-gray-600 hover:shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_0_12px_rgba(0,0,0,0.15)] hover:scale-105 origin-center transition-all duration-300">
                                 <img
                                   src={getRoutePath(svg.route)}
                                   alt={svg.title}
