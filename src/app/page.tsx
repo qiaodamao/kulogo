@@ -8,7 +8,7 @@ import JSZip from "jszip";
 import { svgs, lastUpdated } from "../data/svgs";
 import { categories } from "../data/categories";
 import type { iSVG } from "../types/svg";
-import { cn, getSvgContent, copyToClipboard, downloadFile } from "../lib/utils";
+import { cn, getSvgContent, copyToClipboard, downloadFile, downloadBlob, svgToPngBlob } from "../lib/utils";
 import Header from "../components/Header";
 import Analytics from "../components/Analytics";
 import GoogleAds from "../components/GoogleAds";
@@ -22,6 +22,7 @@ export default function Home() {
   const [selectedLogos, setSelectedLogos] = useState<Set<number>>(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLogo, setSelectedLogo] = useState<iSVG | null>(null);
+  const [modalCopyTarget, setModalCopyTarget] = useState<'icon' | 'wordmark' | null>(null);
   const [copyMenuOpen, setCopyMenuOpen] = useState(false);
   const [copyMenuPosition, setCopyMenuPosition] = useState({ x: 0, y: 0 });
   const [currentSvg, setCurrentSvg] = useState<iSVG | null>(null);
@@ -101,6 +102,17 @@ export default function Home() {
     setSelectedLogos(newSelected);
   };
 
+  // Esc 键关闭弹窗
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
+
   const getRoutePath = (route: string | { dark: string; light: string }) => {
     if (typeof route === "string") {
       console.log('Route is string:', route);
@@ -122,29 +134,25 @@ export default function Home() {
     setCopyMenuOpen(true);
   };
 
-  const copySvg = () => {
+  const copySvg = async () => {
     if (!copyingSvg) {
-      console.error('copyingSvg is null');
       toast.error("复制失败");
       setCopyMenuOpen(false);
       return;
     }
-    
-    console.log('Copying SVG:', copyingSvg.title);
-    
-    // 获取实际的SVG内容
-    const svgUrl = getRoutePath(copyingSvg.route);
-    fetch(svgUrl)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then(content => {
-        console.log('SVG content length:', content.length);
-        
-        // 使用最简单的方法复制
+
+    // 优先复制 wordmark，没有则复制图标版本
+    const route = copyingSvg.wordmark ? copyingSvg.wordmark : copyingSvg.route;
+
+    try {
+      const content = await getSvgContent(getRoutePath(route));
+
+      let success = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(content);
+        success = true;
+      } else {
+        // 降级方案
         const textArea = document.createElement('textarea');
         textArea.value = content;
         textArea.style.position = 'fixed';
@@ -153,58 +161,74 @@ export default function Home() {
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        
-        let success = false;
         try {
           success = document.execCommand('copy');
         } catch (err) {
           console.error('复制失败:', err);
           success = false;
         }
-        
         document.body.removeChild(textArea);
-        
-        console.log('SVG copy success:', success);
-        
-        if (success) {
-          toast.success(`已复制到剪贴板\n分类: ${copyingSvg.category}\nLogo: ${copyingSvg.title}`);
-        } else {
-          toast.error("复制失败");
-        }
-      })
-      .catch(error => {
-        console.error('获取SVG内容失败:', error);
+      }
+
+      if (success) {
+        toast.success("已复制到剪贴板");
+      } else {
         toast.error("复制失败");
-      })
-      .finally(() => {
-        setCopyMenuOpen(false);
-        setCopyingSvg(null);
-      });
+      }
+    } catch (error) {
+      console.error('获取 SVG 内容失败:', error);
+      toast.error("复制失败");
+    } finally {
+      setCopyMenuOpen(false);
+      setCopyingSvg(null);
+    }
   };
 
-  const copyPng = () => {
+  const copyPng = async () => {
     if (!copyingSvg) {
-      console.error('copyingSvg is null');
       toast.error("复制失败");
       setCopyMenuOpen(false);
       return;
     }
-    
-    console.log('Copying PNG:', copyingSvg.title);
-    
-    // 简化PNG复制：先复制SVG，然后提示用户可以转换
-    const svgUrl = getRoutePath(copyingSvg.route);
-    fetch(svgUrl)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then(content => {
-        console.log('SVG content length:', content.length);
-        
-        // 使用最简单的方法复制
+
+    // 优先复制 wordmark，没有则复制图标版本
+    const route = copyingSvg.wordmark ? copyingSvg.wordmark : copyingSvg.route;
+
+    try {
+      // ClipboardItem 仅在安全上下文（https/localhost）可用
+      if (typeof ClipboardItem === 'undefined' || !navigator.clipboard || !navigator.clipboard.write) {
+        toast.error("当前浏览器不支持复制图片，请使用下载功能");
+        return;
+      }
+
+      const content = await getSvgContent(getRoutePath(route));
+      const blob = await svgToPngBlob(content, 1024);
+
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob }),
+      ]);
+
+      toast.success("PNG 已复制到剪贴板");
+    } catch (error) {
+      console.error('PNG 复制失败:', error);
+      toast.error("复制失败，请使用下载功能");
+    } finally {
+      setCopyMenuOpen(false);
+      setCopyingSvg(null);
+    }
+  };
+
+  // 弹窗内复制 SVG（按版本）
+  const copyModalSvg = async (useWordmark: boolean) => {
+    if (!selectedLogo) return;
+    const route = useWordmark && selectedLogo.wordmark ? selectedLogo.wordmark : selectedLogo.route;
+    try {
+      const content = await getSvgContent(getRoutePath(route));
+      let success = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(content);
+        success = true;
+      } else {
         const textArea = document.createElement('textarea');
         textArea.value = content;
         textArea.style.position = 'fixed';
@@ -213,39 +237,75 @@ export default function Home() {
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        
-        let success = false;
-        try {
-          success = document.execCommand('copy');
-        } catch (err) {
-          console.error('复制失败:', err);
-          success = false;
-        }
-        
+        try { success = document.execCommand('copy'); } catch { success = false; }
         document.body.removeChild(textArea);
-        
-        console.log('PNG copy success:', success);
-        
-        if (success) {
-          toast.success(`已复制SVG内容（PNG复制需要通过设计软件转换）\n分类: ${copyingSvg.category}\nLogo: ${copyingSvg.title}`);
-        } else {
-          toast.error("复制失败");
-        }
-      })
-      .catch(error => {
-        console.error('获取SVG内容失败:', error);
-        toast.error("复制失败");
-      })
-      .finally(() => {
-        setCopyMenuOpen(false);
-        setCopyingSvg(null);
-      });
+      }
+      if (success) toast.success("已复制到剪贴板");
+      else toast.error("复制失败");
+    } catch (error) {
+      console.error('SVG 复制失败:', error);
+      toast.error("复制失败");
+    } finally {
+      setModalCopyTarget(null);
+    }
+  };
+
+  // 弹窗内复制 PNG（按版本）
+  const copyModalPng = async (useWordmark: boolean) => {
+    if (!selectedLogo) return;
+    const route = useWordmark && selectedLogo.wordmark ? selectedLogo.wordmark : selectedLogo.route;
+    try {
+      if (typeof ClipboardItem === 'undefined' || !navigator.clipboard || !navigator.clipboard.write) {
+        toast.error("当前浏览器不支持复制图片，请使用下载功能");
+        return;
+      }
+      const content = await getSvgContent(getRoutePath(route));
+      const blob = await svgToPngBlob(content, 1024);
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      toast.success("PNG 已复制到剪贴板");
+    } catch (error) {
+      console.error('PNG 复制失败:', error);
+      toast.error("复制失败，请使用下载功能");
+    } finally {
+      setModalCopyTarget(null);
+    }
   };
 
   const handleDownload = async (svg: iSVG) => {
     try {
-      const content = await getSvgContent(getRoutePath(svg.route));
-      downloadFile(content, `${svg.title}.svg`);
+      // 优先下载 wordmark，没有则下载图标版本
+      const route = svg.wordmark ? svg.wordmark : svg.route;
+      const suffix = svg.wordmark ? "_wordmark" : "";
+      const content = await getSvgContent(getRoutePath(route));
+      downloadFile(content, `${svg.title}${suffix}.svg`);
+      toast.success("下载成功！");
+    } catch (error) {
+      toast.error("下载失败");
+    }
+  };
+
+  // 下载 PNG（支持图标或 wordmark）
+  const handleDownloadPng = async (svg: iSVG, useWordmark: boolean = false) => {
+    try {
+      const route = useWordmark && svg.wordmark ? svg.wordmark : svg.route;
+      const content = await getSvgContent(getRoutePath(route));
+      const blob = await svgToPngBlob(content, 1024);
+      const suffix = useWordmark ? "_wordmark" : "";
+      downloadBlob(blob, `${svg.title}${suffix}.png`);
+      toast.success("下载成功！");
+    } catch (error) {
+      console.error("PNG 下载失败:", error);
+      toast.error("下载失败");
+    }
+  };
+
+  // 下载 SVG（支持图标或 wordmark）
+  const handleDownloadSvg = async (svg: iSVG, useWordmark: boolean = false) => {
+    try {
+      const route = useWordmark && svg.wordmark ? svg.wordmark : svg.route;
+      const content = await getSvgContent(getRoutePath(route));
+      const suffix = useWordmark ? "_wordmark" : "";
+      downloadFile(content, `${svg.title}${suffix}.svg`);
       toast.success("下载成功！");
     } catch (error) {
       toast.error("下载失败");
@@ -329,6 +389,7 @@ export default function Home() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedLogo(null);
+    setModalCopyTarget(null);
   };
 
   // 返回顶部函数
@@ -671,9 +732,9 @@ export default function Home() {
                                 </button>
                               </div>
 
-                              <div className="aspect-square flex items-center justify-center mb-3">
+                              <div className="aspect-square flex items-center justify-center mb-3 px-2">
                                 <img
-                                  src={getRoutePath(svg.route)}
+                                  src={getRoutePath(svg.wordmark ? svg.wordmark : svg.route)}
                                   alt={svg.title}
                                   className="max-w-full max-h-full object-contain"
                                 />
@@ -753,7 +814,10 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative bg-card border border-border rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-2xl"
+                className={cn(
+                  "relative bg-card border border-border rounded-2xl p-6 md:p-8 w-full mx-4 shadow-2xl",
+                  selectedLogo.wordmark ? "max-w-3xl" : "max-w-lg"
+                )}
               >
                 <button
                   onClick={closeModal}
@@ -775,48 +839,148 @@ export default function Home() {
                 </button>
 
                 <div className="text-center">
-                  <div className="aspect-square max-w-xs mx-auto mb-6 flex items-center justify-center bg-accent/30 rounded-xl">
-                    <img
-                      src={getRoutePath(selectedLogo.route)}
-                      alt={selectedLogo.title}
-                      className="max-w-full max-h-full object-contain p-8"
-                    />
+                  <h2 className="text-lg font-bold mb-6">下载 {selectedLogo.title}</h2>
+
+                  {/* 有 wordmark 时左右并排显示，无 wordmark 时单列显示 */}
+                  <div className={selectedLogo.wordmark ? "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" : "mb-6"}>
+                    {/* 图标版本 */}
+                    <div className="flex flex-col">
+                      <div className={cn(
+                        "mx-auto mb-3 flex items-center justify-center bg-accent/30 rounded-xl overflow-hidden",
+                        selectedLogo.wordmark
+                          ? "w-full aspect-square"
+                          : "w-52 h-52 md:w-60 md:h-60"
+                      )}>
+                        <img
+                          src={getRoutePath(selectedLogo.route)}
+                          alt={selectedLogo.title}
+                          className="max-w-full max-h-full object-contain p-4"
+                        />
+                      </div>
+                      {selectedLogo.wordmark && (
+                        <p className="text-center text-sm font-medium mb-3 text-muted-foreground">图标版本</p>
+                      )}
+                      <div className="relative flex gap-2 justify-center flex-wrap">
+                        {/* 复制按钮 + 下拉菜单 */}
+                        <div className="relative">
+                          <button
+                            onClick={() => setModalCopyTarget(modalCopyTarget === 'icon' ? null : 'icon')}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-accent rounded-xl hover:bg-accent/80 transition-colors text-sm font-medium"
+                          >
+                            <Copy className="w-4 h-4" />
+                            复制
+                          </button>
+                          {modalCopyTarget === 'icon' && (
+                            <>
+                              <div className="fixed inset-0 z-40" onClick={() => setModalCopyTarget(null)} />
+                              <div className="absolute top-full left-0 mt-1 z-50 bg-card border border-border rounded-xl shadow-lg overflow-hidden min-w-[140px]">
+                                <button
+                                  onClick={() => copyModalSvg(false)}
+                                  className="w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors"
+                                >
+                                  复制 SVG
+                                </button>
+                                <button
+                                  onClick={() => copyModalPng(false)}
+                                  className="w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors"
+                                >
+                                  复制 PNG
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleDownloadSvg(selectedLogo, false)}
+                          className="flex items-center gap-2 px-4 py-2.5 bg-accent rounded-xl hover:bg-accent/80 transition-colors text-sm font-medium"
+                        >
+                          <Download className="w-4 h-4" />
+                          下载 SVG
+                        </button>
+                        <button
+                          onClick={() => handleDownloadPng(selectedLogo, false)}
+                          className="flex items-center gap-2 px-4 py-2.5 bg-accent rounded-xl hover:bg-accent/80 transition-colors text-sm font-medium"
+                        >
+                          <Download className="w-4 h-4" />
+                          下载 PNG
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Wordmark 组合版本（仅当存在时显示） */}
+                    {selectedLogo.wordmark && (
+                      <div className="flex flex-col">
+                        <div className="w-full aspect-[3/1] mx-auto mb-3 flex items-center justify-center bg-accent/30 rounded-xl overflow-hidden">
+                          <img
+                            src={getRoutePath(selectedLogo.wordmark)}
+                            alt={`${selectedLogo.title} wordmark`}
+                            className="max-w-full max-h-full object-contain p-4"
+                          />
+                        </div>
+                        <p className="text-center text-sm font-medium mb-3 text-muted-foreground">组合版本</p>
+                        <div className="relative flex gap-2 justify-center flex-wrap">
+                          <div className="relative">
+                            <button
+                              onClick={() => setModalCopyTarget(modalCopyTarget === 'wordmark' ? null : 'wordmark')}
+                              className="flex items-center gap-2 px-4 py-2.5 bg-accent rounded-xl hover:bg-accent/80 transition-colors text-sm font-medium"
+                            >
+                              <Copy className="w-4 h-4" />
+                              复制
+                            </button>
+                            {modalCopyTarget === 'wordmark' && (
+                              <>
+                                <div className="fixed inset-0 z-40" onClick={() => setModalCopyTarget(null)} />
+                                <div className="absolute top-full left-0 mt-1 z-50 bg-card border border-border rounded-xl shadow-lg overflow-hidden min-w-[140px]">
+                                  <button
+                                    onClick={() => copyModalSvg(true)}
+                                    className="w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors"
+                                  >
+                                    复制 SVG
+                                  </button>
+                                  <button
+                                    onClick={() => copyModalPng(true)}
+                                    className="w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors"
+                                  >
+                                    复制 PNG
+                                  </button>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => handleDownloadSvg(selectedLogo, true)}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-accent rounded-xl hover:bg-accent/80 transition-colors text-sm font-medium"
+                          >
+                            <Download className="w-4 h-4" />
+                            下载 SVG
+                          </button>
+                          <button
+                            onClick={() => handleDownloadPng(selectedLogo, true)}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-accent rounded-xl hover:bg-accent/80 transition-colors text-sm font-medium"
+                          >
+                            <Download className="w-4 h-4" />
+                            下载 PNG
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  <h2 className="text-2xl font-bold mb-2">{selectedLogo.title}</h2>
-                  <p className="text-muted-foreground mb-4">{selectedLogo.category}</p>
-                  
+                  <p className="text-xs text-muted-foreground mt-4">请选择下载或复制格式：SVG / PNG。</p>
+
                   {selectedLogo.url && selectedLogo.url !== "TODO" && (
-                    <a
-                      href={selectedLogo.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-primary hover:underline mb-6"
-                    >
-                      访问官网
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
+                    <div className="flex items-center justify-center mt-6 pt-6 border-t" style={{ borderColor: '#f1f5f9' }}>
+                      <a
+                        href={selectedLogo.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        访问官网
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    </div>
                   )}
-
-                  <div className="flex gap-4 justify-center mt-8">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCopy(selectedLogo, e);
-                      }}
-                      className="flex items-center gap-2 px-6 py-3 bg-accent rounded-xl hover:bg-accent/80 transition-colors"
-                    >
-                      <Copy className="w-5 h-5" />
-                      复制
-                    </button>
-                    <button
-                      onClick={() => handleDownload(selectedLogo)}
-                      className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-opacity"
-                    >
-                      <Download className="w-5 h-5" />
-                      下载 SVG
-                    </button>
-                  </div>
                 </div>
               </motion.div>
             </div>

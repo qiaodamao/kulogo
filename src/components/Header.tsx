@@ -73,7 +73,7 @@ export default function Header() {
       <nav className="fixed top-0 left-0 right-0 z-50 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-4 flex justify-center items-center">
           {/* 胶囊导航容器 - 居中，包含全部内容 */}
-          <div className="flex items-center gap-1 justify-between md:justify-center w-full md:w-auto bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2 px-4 md:px-2 shadow-[0_2px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)] max-w-full">
+          <div className="flex items-center gap-1 justify-between md:justify-center w-full md:w-auto bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2.5 px-4 md:px-2.5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)] max-w-full">
             {/* Logo */}
             <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pl-2 pr-1 mr-auto md:mr-0">
               <div className="w-9 h-9">
@@ -98,7 +98,7 @@ export default function Header() {
                   href={item.href}
                   {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className={
-                    "hidden md:inline-block px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
+                    "hidden md:inline-block px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 " +
                     (active
                       ? "bg-[#16a34a] text-white shadow-sm"
                       : "text-foreground hover:bg-black/5 dark:hover:bg-white/10")
@@ -128,7 +128,7 @@ export default function Header() {
                   console.error("Error opening Tally form:", error);
                 }
               }}
-              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
+              className="hidden md:flex items-center justify-center w-11 h-11 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
               aria-label="提交图标"
             >
               <Upload className="w-5 h-5" />
@@ -139,7 +139,7 @@ export default function Header() {
               href="https://github.com/qiaodamao/kulogo"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
+              className="hidden md:flex items-center justify-center w-11 h-11 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
               aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
@@ -148,7 +148,7 @@ export default function Header() {
             {/* 主题切换 */}
             <button
               onClick={toggleDarkMode}
-              className="flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
+              className="flex items-center justify-center w-11 h-11 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
               aria-label="切换主题"
             >
               {isClient ? (isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />) : <Moon className="w-5 h-5" />}
@@ -156,7 +156,7 @@ export default function Header() {
 
             {/* 移动端菜单按钮 */}
             <button
-              className="md:hidden flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-300"
+              className="md:hidden flex items-center justify-center w-11 h-11 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-300"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="菜单"
             >

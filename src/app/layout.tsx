@@ -38,7 +38,7 @@ export default function RootLayout({
       </head>
       <body style={{ fontFamily: '"Microsoft YaHei", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
         {children}
-        <Toaster />
+        <Toaster duration={2000} />
       </body>
     </html>
   );
