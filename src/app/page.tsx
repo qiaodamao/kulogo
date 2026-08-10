@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { Search, Sun, Moon, Copy, Download, ArrowUpRight, Github, ArrowUp } from "lucide-react";
+import { Search, Sun, Moon, Copy, Download, ArrowUpRight, Github, ArrowUp, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import JSZip from "jszip";
@@ -325,22 +325,25 @@ export default function Home() {
     for (const svg of selectedSvgs) {
       try {
         console.log('Processing SVG for batch download:', svg.title);
-        const routePath = getRoutePath(svg.route);
+        // 优先使用 wordmark 版本，没有则使用图标版本
+        const route = svg.wordmark ? svg.wordmark : svg.route;
+        const routePath = getRoutePath(route);
         console.log('Route path:', routePath);
-        
+
         // 直接使用fetch获取SVG内容
         const response = await fetch(routePath);
         console.log('Response status for', svg.title, ':', response.status);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const content = await response.text();
         console.log('SVG content length for', svg.title, ':', content.length);
-        
+
         if (content.length > 0) {
-          zip.file(`${svg.title}.svg`, content);
+          const suffix = svg.wordmark ? "_wordmark" : "";
+          zip.file(`${svg.title}${suffix}.svg`, content);
           successCount++;
         } else {
           console.error(`Empty SVG content for ${svg.title}`);
@@ -581,13 +584,22 @@ export default function Home() {
               </button>
             </div>
             {selectedLogos.size > 0 && (
-              <button
-                onClick={handleBatchDownload}
-                className="flex items-center gap-2 px-4 py-2 bg-[rgb(22_163_74)] text-white rounded-full text-sm font-medium hover:bg-[rgb(22_163_74)]/90 hover:shadow-[0_4px_12px_rgba(22,163,74,0.3)] transition-all duration-300"
-              >
-                <Download className="w-4 h-4" />
-                批量下载 ({selectedLogos.size})
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSelectedLogos(new Set())}
+                  className="flex items-center gap-2 px-4 py-2 bg-accent text-foreground rounded-full text-sm font-medium hover:bg-accent/80 transition-all duration-300"
+                >
+                  <X className="w-4 h-4" />
+                  取消选择
+                </button>
+                <button
+                  onClick={handleBatchDownload}
+                  className="flex items-center gap-2 px-4 py-2 bg-[rgb(22_163_74)] text-white rounded-full text-sm font-medium hover:bg-[rgb(22_163_74)]/90 hover:shadow-[0_4px_12px_rgba(22,163,74,0.3)] transition-all duration-300"
+                >
+                  <Download className="w-4 h-4" />
+                  批量下载 ({selectedLogos.size})
+                </button>
+              </div>
             )}
           </div>
 
@@ -807,13 +819,15 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: 0.12 }}
                 onClick={closeModal}
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/50"
               />
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.12, ease: "easeOut" }}
                 className={cn(
                   "relative bg-card border border-border rounded-2xl p-6 md:p-8 w-full mx-4 shadow-2xl",
                   selectedLogo.wordmark ? "max-w-3xl" : "max-w-lg"
@@ -966,7 +980,7 @@ export default function Home() {
                     )}
                   </div>
 
-                  <p className="text-xs text-muted-foreground mt-4">请选择下载或复制格式：SVG / PNG。</p>
+                  <p className="text-xs text-muted-foreground mt-4">请选 SVG / PNG 格式复制或下载</p>
 
                   {selectedLogo.url && selectedLogo.url !== "TODO" && (
                     <div className="flex items-center justify-center mt-6 pt-6 border-t" style={{ borderColor: '#f1f5f9' }}>
