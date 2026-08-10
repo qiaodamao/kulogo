@@ -169,31 +169,29 @@ export default function Header() {
 
         {/* 移动端菜单 - 胶囊导航 */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 border-t border-border bg-white dark:bg-gray-900 shadow-lg z-40 w-full">
-            <div className="w-full px-4 sm:px-6 lg:px-8 py-4 space-y-3">
-              {/* 胶囊样式导航项 */}
-              <div className="flex flex-wrap gap-2">
-                {navItems.map((item) => {
-                  const active = isActive(item.href);
-                  const Icon = item.icon;
-                  return (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className={
-                        "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
-                        (active
-                          ? "bg-[#06b30c] text-white shadow-sm"
-                          : "bg-black/5 dark:bg-white/10 text-foreground")
-                      }
-                    >
-                      <Icon className="w-4 h-4" />
-                      {item.label}
-                    </a>
-                  );
-                })}
-              </div>
+          <div className="md:hidden absolute top-full left-4 right-4 bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] z-40">
+            <div className="px-4 py-3">
+              {/* 列表样式导航项 */}
+              {navItems.map((item) => {
+                const active = isActive(item.href);
+                const Icon = item.icon;
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className={
+                      "flex items-center gap-2 py-3 transition-colors w-full text-left " +
+                      (active
+                        ? "text-[#06b30c]"
+                        : "text-foreground hover:text-[#16a34a]")
+                    }
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.label}
+                  </a>
+                );
+              })}
               <button
                 onClick={async () => {
                   try {
@@ -209,12 +207,12 @@ export default function Header() {
                     console.error("Error opening Tally form:", error);
                   }
                 }}
-                className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors w-full text-left"
+                className="flex items-center gap-2 py-3 text-foreground hover:text-[#16a34a] transition-colors w-full text-left"
               >
                 <Upload className="w-4 h-4" />
                 提交图标
               </button>
-              <a href="https://github.com/xmbsm/kulogo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-2 text-foreground hover:text-[#16a34a] transition-colors">
+              <a href="https://github.com/xmbsm/kulogo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-3 text-foreground hover:text-[#16a34a] transition-colors">
                 <Github className="w-4 h-4" />
                 GitHub
               </a>

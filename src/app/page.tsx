@@ -23,6 +23,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLogo, setSelectedLogo] = useState<iSVG | null>(null);
   const [modalCopyTarget, setModalCopyTarget] = useState<'icon' | 'wordmark' | null>(null);
+  const [mobileVersion, setMobileVersion] = useState<'icon' | 'wordmark'>('wordmark');
   const [copyMenuOpen, setCopyMenuOpen] = useState(false);
   const [copyMenuPosition, setCopyMenuPosition] = useState({ x: 0, y: 0 });
   const [currentSvg, setCurrentSvg] = useState<iSVG | null>(null);
@@ -393,6 +394,7 @@ export default function Home() {
     setIsModalOpen(false);
     setSelectedLogo(null);
     setModalCopyTarget(null);
+    setMobileVersion('wordmark');
   };
 
   // 返回顶部函数
@@ -862,14 +864,45 @@ export default function Home() {
                 <div className="text-center">
                   <h2 className="text-lg font-bold mb-6">下载 {selectedLogo.title}</h2>
 
-                  {/* 有 wordmark 时左右并排显示，无 wordmark 时单列显示 */}
+                  {/* 移动端版本切换按钮（仅有 wordmark 时显示） */}
+                  {selectedLogo.wordmark && (
+                    <div className="md:hidden inline-flex items-center gap-1 mb-6 p-1 bg-accent/50 rounded-full">
+                      <button
+                        onClick={() => setMobileVersion('wordmark')}
+                        className={cn(
+                          "px-5 py-1.5 rounded-full text-sm font-medium transition-all",
+                          mobileVersion === 'wordmark'
+                            ? "bg-card text-foreground shadow-sm"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        组合版本
+                      </button>
+                      <button
+                        onClick={() => setMobileVersion('icon')}
+                        className={cn(
+                          "px-5 py-1.5 rounded-full text-sm font-medium transition-all",
+                          mobileVersion === 'icon'
+                            ? "bg-card text-foreground shadow-sm"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        图标版本
+                      </button>
+                    </div>
+                  )}
+
+                  {/* 有 wordmark 时 PC 端左右并排显示，无 wordmark 时单列显示；移动端通过切换显示一个 */}
                   <div className={selectedLogo.wordmark ? "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" : "mb-6"}>
                     {/* 图标版本 */}
-                    <div className="flex flex-col">
+                    <div className={cn(
+                      "flex flex-col",
+                      selectedLogo.wordmark && mobileVersion !== 'icon' && "hidden md:flex"
+                    )}>
                       <div className={cn(
                         "mx-auto mb-3 flex items-center justify-center bg-accent/30 rounded-xl overflow-hidden",
                         selectedLogo.wordmark
-                          ? "w-full aspect-square"
+                          ? "w-full h-48 md:h-auto md:aspect-square"
                           : "w-52 h-52 md:w-60 md:h-60"
                       )}>
                         <img
@@ -879,7 +912,7 @@ export default function Home() {
                         />
                       </div>
                       {selectedLogo.wordmark && (
-                        <p className="text-center text-sm font-medium mb-3 text-muted-foreground">图标版本</p>
+                        <p className="hidden md:block text-center text-sm font-medium mb-3 text-muted-foreground">图标版本</p>
                       )}
                       <div className="relative flex gap-2 justify-center flex-wrap">
                         {/* 复制按钮 + 下拉菜单 */}
@@ -930,15 +963,18 @@ export default function Home() {
 
                     {/* Wordmark 组合版本（仅当存在时显示） */}
                     {selectedLogo.wordmark && (
-                      <div className="flex flex-col">
-                        <div className="w-full aspect-[3/1] mx-auto mb-3 flex items-center justify-center bg-accent/30 rounded-xl overflow-hidden">
+                      <div className={cn(
+                        "flex flex-col",
+                        mobileVersion !== 'wordmark' && "hidden md:flex"
+                      )}>
+                        <div className="w-full h-48 md:h-auto md:aspect-[3/1] mx-auto mb-3 flex items-center justify-center bg-accent/30 rounded-xl overflow-hidden">
                           <img
                             src={getRoutePath(selectedLogo.wordmark)}
                             alt={`${selectedLogo.title} wordmark`}
                             className="max-w-full max-h-full object-contain p-4"
                           />
                         </div>
-                        <p className="text-center text-sm font-medium mb-3 text-muted-foreground">组合版本</p>
+                        <p className="hidden md:block text-center text-sm font-medium mb-3 text-muted-foreground">组合版本</p>
                         <div className="relative flex gap-2 justify-center flex-wrap">
                           <div className="relative">
                             <button
