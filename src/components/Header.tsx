@@ -17,7 +17,7 @@ export default function Header() {
     { label: "关于", href: "/about", icon: FileText },
     { label: "支持", href: "/sponsor", icon: Heart },
     { label: "素材站", href: "https://sucai.kusheji.com/", external: true, icon: Package },
-    { label: "网址导航", href: "https://dh.kusheji.com/", external: true, icon: Link },
+    { label: "网址导航", href: "https://dsxdh.com/", external: true, icon: Link },
   ];
 
   const isActive = (href: string) => !href.startsWith("http") && pathname === href;

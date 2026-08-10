@@ -72,7 +72,7 @@ export default function Footer() {
               <div className="flex flex-wrap gap-4 text-sm">
                 <a href="/" className="text-muted-foreground hover:text-[#22c55e] transition-colors">首页</a>
                 <a href="/about" className="text-muted-foreground hover:text-[#22c55e] transition-colors">关于</a>
-                <a href="/sponsor" className="text-muted-foreground hover:text-[#22c55e] transition-colors">赞助支持</a>
+                <a href="/sponsor" className="text-muted-foreground hover:text-[#22c55e] transition-colors">支持</a>
                 <a href="https://github.com/xmbsm/kulogo" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#22c55e] transition-colors">提交</a>
               </div>
             </div>

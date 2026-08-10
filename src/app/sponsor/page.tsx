@@ -16,7 +16,7 @@ const SponsorPage = () => {
     <div>
       <Header />
       <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-[150px] md:pt-[188px] pb-16" style={{ maxWidth: '1400px' }}>
-        <h1 className="text-3xl font-bold mb-8">赞助支持</h1>
+        <h1 className="text-3xl font-bold mb-8">支持</h1>
         <div className="space-y-6">
           <p className="text-lg">
             酷设计 SVG Logo 素材库是一个开源项目，需要您的支持来持续发展和改进。
