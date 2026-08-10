@@ -73,7 +73,7 @@ export default function Footer() {
                 <a href="/" className="text-muted-foreground hover:text-[#22c55e] transition-colors">首页</a>
                 <a href="/about" className="text-muted-foreground hover:text-[#22c55e] transition-colors">关于</a>
                 <a href="/sponsor" className="text-muted-foreground hover:text-[#22c55e] transition-colors">支持</a>
-                <a href="https://github.com/xmbsm/kulogo" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#22c55e] transition-colors">提交</a>
+                <a href="https://kusheji.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#22c55e] transition-colors">酷设计</a>
               </div>
             </div>
           </div>
