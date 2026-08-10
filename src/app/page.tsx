@@ -749,6 +749,13 @@ export default function Home() {
                                   src={getRoutePath(svg.wordmark ? svg.wordmark : svg.route)}
                                   alt={svg.title}
                                   className="max-w-full max-h-full object-contain"
+                                  onError={(e) => {
+                                    const img = e.currentTarget;
+                                    const fallback = getRoutePath(svg.route);
+                                    if (img.src !== fallback) {
+                                      img.src = fallback;
+                                    }
+                                  }}
                                 />
                               </div>
                               <div className="text-center">

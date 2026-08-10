@@ -1,5 +1,5 @@
 // 自动生成，请勿手动编辑
-// Generated at: 2026/04/11 06:17:50
+// Generated at: 2026/08/10 14:06:17
 // 由 scripts/generate-svgs.ts 生成
 
 import type { iSVG } from "../types/svg";
@@ -3526,7 +3526,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-01-无贫穷",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_1.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_1.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3534,7 +3533,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-02-零饥饿",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_2.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_2.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3542,7 +3540,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-03-良好健康与福祉",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_3.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_3.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3550,7 +3547,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-04-优质教育",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_4.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_4.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3558,7 +3554,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-05-性别平等",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_5.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_5.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3566,7 +3561,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-06-清洁饮水和卫生设施",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_6.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_6.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3574,7 +3568,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-07-经济适用的清洁能源",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_7.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_7.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3582,7 +3575,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-08-体面工作和经济增长",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_8.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_8.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3590,7 +3582,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-09-产业、创新和基础设施",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_9.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_9.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3598,7 +3589,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-10-减少不平等",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_10.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_10.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3606,7 +3596,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-11-可持续城市和社区",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_11.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_11.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3614,7 +3603,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-12-负责任消费和生产",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_12.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_12.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3622,7 +3610,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-13-气候行动",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_13.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_13.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3630,7 +3617,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-14-水下生物",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_14.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_14.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3638,7 +3624,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-15-陆地生物",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_15.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_15.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3646,7 +3631,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-16-和平、正义与强大机构",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_16.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_16.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -3654,7 +3638,6 @@ export const svgs: iSVG[] = [
     title: "联合国发展目标-17-促进目标实现的伙伴关系",
     category: "其他",
     route: "/library/other/unitedNationsDevelopmentGoals_ZH_17.svg",
-    wordmark: "/library/other/unitedNationsDevelopmentGoals_EN_17.svg",
     url: "https://www.un.org/zh",
   },
   {
@@ -6703,4 +6686,4 @@ export const svgs: iSVG[] = [
 ];
 
 // 最后更新时间
-export const lastUpdated: string = "2026-04-11";
+export const lastUpdated: string = "2026-08-10";
