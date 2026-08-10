@@ -76,7 +76,7 @@ export default function Header() {
           <div className="flex items-center gap-1 justify-between md:justify-center w-full md:w-auto bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2.5 px-4 md:px-2.5 shadow-[0_2px_20px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] max-w-full">
             {/* Logo */}
             <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pl-2 pr-1 mr-auto md:mr-0">
-              <div className="w-9 h-9">
+              <div className="w-9 h-9 rounded-full overflow-hidden">
                 <img
                   src="/images/logo.svg"
                   alt="SVG Logo"
@@ -98,9 +98,9 @@ export default function Header() {
                   href={item.href}
                   {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className={
-                    "hidden md:inline-block px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 " +
+                    "hidden md:inline-block px-4 py-[0.4rem] rounded-full text-sm font-medium transition-all duration-300 " +
                     (active
-                      ? "bg-[#16a34a] text-white shadow-sm"
+                      ? "bg-[#06b30c] text-white shadow-sm"
                       : "text-foreground hover:bg-black/5 dark:hover:bg-white/10")
                   }
                 >
@@ -184,7 +184,7 @@ export default function Header() {
                       className={
                         "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
                         (active
-                          ? "bg-[#16a34a] text-white shadow-sm"
+                          ? "bg-[#06b30c] text-white shadow-sm"
                           : "bg-black/5 dark:bg-white/10 text-foreground")
                       }
                     >

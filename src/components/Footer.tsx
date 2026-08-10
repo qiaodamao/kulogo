@@ -48,7 +48,7 @@ export default function Footer() {
           {/* 左侧信息 */}
           <div>
             <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity mb-4">
-              <div className="w-8 h-8">
+              <div className="w-8 h-8 rounded-full overflow-hidden">
                 <img 
                   src="/images/logo.svg" 
                   alt="酷设计" 

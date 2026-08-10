@@ -594,7 +594,7 @@ export default function Home() {
                 </button>
                 <button
                   onClick={handleBatchDownload}
-                  className="flex items-center gap-2 px-4 py-2 bg-[rgb(22_163_74)] text-white rounded-full text-sm font-medium hover:bg-[rgb(22_163_74)]/90 hover:shadow-[0_4px_12px_rgba(22,163,74,0.3)] transition-all duration-300"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#06b30c] text-white rounded-full text-sm font-medium hover:bg-[#06b30c]/90 hover:shadow-[0_4px_12px_rgba(6,179,12,0.3)] transition-all duration-300"
                 >
                   <Download className="w-4 h-4" />
                   批量下载 ({selectedLogos.size})
