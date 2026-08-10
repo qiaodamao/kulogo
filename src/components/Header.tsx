@@ -128,16 +128,15 @@ export default function Header() {
                   console.error("Error opening Tally form:", error);
                 }
               }}
-              className="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 bg-black/5 dark:bg-white/10 text-foreground rounded-full text-sm font-medium hover:bg-black/10 dark:hover:bg-white/20 hover:text-[#16a34a] transition-all duration-300"
-              style={{ lineHeight: '1.1rem' }}
+              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"
+              aria-label="提交图标"
             >
-              <Upload className="w-4 h-4" />
-              <span className="hidden lg:inline">提交图标</span>
+              <Upload className="w-5 h-5" />
             </button>
 
             {/* GitHub（桌面端） */}
             <a
-              href="https://github.com/xmbsm/kulogo"
+              href="https://github.com/qiaodamao/kulogo"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex items-center justify-center w-10 h-10 rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a] transition-all duration-300"

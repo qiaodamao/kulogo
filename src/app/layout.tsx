@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { config } from "../config";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: config.tdk.home.title,
@@ -39,7 +36,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon-precomposed" href="/images/logo-night.png" />
         <meta name="msapplication-TileImage" content="/images/logo-night.png" />
       </head>
-      <body className={inter.className}>
+      <body style={{ fontFamily: '"Microsoft YaHei", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
         {children}
         <Toaster />
       </body>
