@@ -212,7 +212,7 @@ export default function Header() {
                 <Upload className="w-4 h-4" />
                 提交图标
               </button>
-              <a href="https://github.com/xmbsm/kulogo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-3 text-foreground hover:text-[#16a34a] transition-colors">
+              <a href="https://github.com/qiaodamao/kulogo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-3 text-foreground hover:text-[#16a34a] transition-colors">
                 <Github className="w-4 h-4" />
                 GitHub
               </a>
