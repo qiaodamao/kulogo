@@ -15,7 +15,7 @@ const SponsorPage = () => {
   return (
     <div>
       <Header />
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16" style={{ maxWidth: '1400px' }}>
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-[188px] pb-16" style={{ maxWidth: '1400px' }}>
         <h1 className="text-3xl font-bold mb-8">赞助支持</h1>
         <div className="space-y-6">
           <p className="text-lg">

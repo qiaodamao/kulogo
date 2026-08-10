@@ -73,9 +73,9 @@ export default function Header() {
       <nav className="fixed top-0 left-0 right-0 z-50 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-4 flex justify-center items-center">
           {/* 胶囊导航容器 - 居中，包含全部内容 */}
-          <div className="flex items-center gap-1 bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2 shadow-[0_2px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)] max-w-full">
+          <div className="flex items-center gap-1 justify-between md:justify-center w-full md:w-auto bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2 px-4 md:px-2 shadow-[0_2px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)] max-w-full">
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pl-2 pr-1">
+            <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pl-2 pr-1 mr-auto md:mr-0">
               <div className="w-9 h-9">
                 <img
                   src="/images/logo.svg"
@@ -87,7 +87,7 @@ export default function Header() {
             </a>
 
             {/* 分隔线 */}
-            <div className="hidden md:block w-px h-6 bg-gray-200 dark:bg-gray-600 mx-0.5"></div>
+            <div className="hidden md:block w-px h-6 bg-gray-200 dark:bg-gray-600 mx-3"></div>
 
             {/* 导航链接（桌面端） */}
             {navItems.map((item) => {
@@ -98,7 +98,7 @@ export default function Header() {
                   href={item.href}
                   {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className={
-                    "hidden md:inline-block px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
+                    "hidden md:inline-block px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 " +
                     (active
                       ? "bg-[#16a34a] text-white shadow-sm"
                       : "text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#16a34a]")
@@ -110,7 +110,7 @@ export default function Header() {
             })}
 
             {/* 分隔线 */}
-            <div className="hidden md:block w-px h-6 bg-gray-200 dark:bg-gray-600 mx-0.5"></div>
+            <div className="hidden md:block w-px h-6 bg-gray-200 dark:bg-gray-600 mx-3"></div>
 
             {/* 提交图标按钮（桌面端） */}
             <button
