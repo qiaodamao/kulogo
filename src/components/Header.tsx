@@ -75,7 +75,7 @@ export default function Header() {
           {/* 胶囊导航容器 - 居中，包含全部内容 */}
           <div className="flex items-center gap-1 justify-between md:justify-center w-full md:w-auto bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-full p-2.5 px-4 md:px-2.5 shadow-[0_2px_20px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] max-w-full">
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pl-2 pr-1 mr-auto md:mr-0">
+            <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity pr-1 mr-auto md:mr-0">
               <div className="w-9 h-9 rounded-full overflow-hidden">
                 <img
                   src="/images/logo.svg"
